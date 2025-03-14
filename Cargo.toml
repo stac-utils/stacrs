@@ -40,7 +40,3 @@ thiserror = "2.0.12"
 tokio = { version = "1.44.0", features = ["rt-multi-thread"] }
 pyo3-log = "0.12.1"
 tracing = "0.1.41"
-
-[patch.crates-io]
-duckdb = { git = "https://github.com/duckdb/duckdb-rs", rev = "5eeb1f01c278790ce1e2d24045f0096e9e2528e4" }
-libduckdb-sys = { git = "https://github.com/duckdb/duckdb-rs", rev = "5eeb1f01c278790ce1e2d24045f0096e9e2528e4" }

@@ -17,7 +17,7 @@ theme:
 
 nav:
   - Home: index.md
-  - Example notebook: example.ipynb
+  - Examples: generated/gallery
   - API:
       - api/index.md
       - arrow: api/arrow.md
@@ -31,8 +31,12 @@ nav:
   - CONTRIBUTING.md
 
 plugins:
+  - gallery:
+      examples_dirs: docs/examples
+      gallery_dirs: docs/generated/gallery
+      filename_pattern: /example_
+  - markdown-exec
   - mike
-  - mkdocs-jupyter
   - mkdocstrings:
       enable_inventory: true
       handlers:
@@ -51,6 +55,7 @@ plugins:
             signature_crossrefs: true
           inventories:
             - https://kylebarron.dev/arro3/latest/objects.inv
+            - https://geopandas.org/en/stable/objects.inv
   - search
   - social:
       cards_layout_options:

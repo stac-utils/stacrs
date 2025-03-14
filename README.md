@@ -41,80 +41,56 @@ conda install conda-forge::stacrs
 
 Then:
 
-```python
+```python exec="on" source="above"
+import asyncio
 import stacrs
 
-# Search a STAC API
-items = await stacrs.search(
-    "https://landsatlook.usgs.gov/stac-server",
-    collections="landsat-c2l2-sr",
-    intersects={"type": "Point", "coordinates": [-105.119, 40.173]},
-    sortby="-properties.datetime",
-    max_items=100,
-)
+async def main() -> None:
+    # Search a STAC API
+    items = await stacrs.search(
+        "https://landsatlook.usgs.gov/stac-server",
+        collections="landsat-c2l2-sr",
+        intersects={"type": "Point", "coordinates": [-105.119, 40.173]},
+        sortby="-properties.datetime",
+        max_items=100,
+    )
 
-# If you installed with `pystac[arrow]`:
-from geopandas import GeoDataFrame
+    # If you installed with `pystac[arrow]`:
+    from geopandas import GeoDataFrame
 
-table = stacrs.to_arrow(items)
-data_frame = GeoDataFrame.from_arrow(table)
-items = stacrs.from_arrow(data_frame.to_arrow())
+    table = stacrs.to_arrow(items)
+    data_frame = GeoDataFrame.from_arrow(table)
+    items = stacrs.from_arrow(data_frame.to_arrow())
 
-# Write items to a stac-geoparquet file
-await stacrs.write("items.parquet", items)
+    # Write items to a stac-geoparquet file
+    await stacrs.write("/tmp/items.parquet", items)
 
-# Read items from a stac-geoparquet file as an item collection
-item_collection = await stacrs.read("items.parquet")
+    # Read items from a stac-geoparquet file as an item collection
+    item_collection = await stacrs.read("/tmp/items.parquet")
 
-# You can search geoparquet files using DuckDB
-# If you want to search a file on s3, make sure to configure your AWS environment first
-item_collection = await stacrs.search("s3://bucket/items.parquet", ...)
+    # Use `search_to` for better performance if you know you'll be writing the items
+    # to a file
+    await stacrs.search_to(
+        "/tmp/items.parquet",
+        "https://landsatlook.usgs.gov/stac-server",
+        collections="landsat-c2l2-sr",
+        intersects={"type": "Point", "coordinates": [-105.119, 40.173]},
+        sortby="-properties.datetime",
+        max_items=100,
+    )
 
-# Use `search_to` for better performance if you know you'll be writing the items
-# to a file
-await stacrs.search_to(
-    "items.parquet",
-    "https://landsatlook.usgs.gov/stac-server",
-    collections="landsat-c2l2-sr",
-    intersects={"type": "Point", "coordinates": [-105.119, 40.173]},
-    sortby="-properties.datetime",
-    max_items=100,
-)
+asyncio.run(main())
 ```
 
 See [the documentation](https://stac-utils.github.io/stacrs) for details.
-In particular, our [example notebook](https://stac-utils.github.io/stacrs/latest/example/) demonstrates some of the more interesting features.
+In particular, our [examples](https://stac-utils.github.io/stacrs/latest/examples/) demonstrate some of the more interesting features.
 
 ## CLI
 
 **stacrs** comes with a CLI:
 
-```shell
-$ stacrs -h
-stacrs: A command-line interface for the SpatioTemporal Asset Catalog (STAC)
-
-Usage: stacrs [OPTIONS] <COMMAND>
-
-Commands:
-  translate  Translates STAC from one format to another
-  search     Searches a STAC API or stac-geoparquet file
-  serve      Serves a STAC API
-  validate   Validates a STAC value
-  help       Print this message or the help of the given subcommand(s)
-
-Options:
-  -i, --input-format <INPUT_FORMAT>
-          The input format.
-      --opt <OPTIONS>
-          Options for getting and putting files from object storage.
-  -o, --output-format <OUTPUT_FORMAT>
-          The output format.
-  -c, --compact-json <COMPACT_JSON>
-          Whether to print compact JSON output [possible values: true, false]
-      --parquet-compression <PARQUET_COMPRESSION>
-          The parquet compression to use when writing stac-geoparquet.
-  -h, --help
-          Print help (see more with '--help')
+```bash exec="on" source="above" result="text"
+stacrs -h
 ```
 
 > [!NOTE]

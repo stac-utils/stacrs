@@ -57,3 +57,5 @@ jobs:
         run: uv sync
       - name: Test w/o extras
         run: uv run pytest
+      - name: Check docs
+        run: uv run mkdocs build --strict

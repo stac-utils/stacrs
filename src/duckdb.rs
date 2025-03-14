@@ -18,7 +18,7 @@ pub struct DuckdbClient(Mutex<Client>);
 #[pymethods]
 impl DuckdbClient {
     #[new]
-    #[pyo3(signature = (*, use_s3_credential_chain=true, use_azure_credential_chain=true, use_httpfs=true, use_hive_partitioning=false, install_extensions=true, custom_extension_repository=None, extension_directory=None))]
+    #[pyo3(signature = (*, use_s3_credential_chain=false, use_azure_credential_chain=false, use_httpfs=false, use_hive_partitioning=false, install_extensions=true, custom_extension_repository=None, extension_directory=None))]
     fn new(
         use_s3_credential_chain: bool,
         use_azure_credential_chain: bool,

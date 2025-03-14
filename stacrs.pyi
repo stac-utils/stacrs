@@ -2,6 +2,9 @@ from typing import Any, AsyncIterator, Literal, Optional, Tuple
 
 import arro3.core
 
+class StacrsError(Exception):
+    """A package-specific exception."""
+
 class DuckdbClient:
     """A client for querying stac-geoparquet with DuckDB."""
 
@@ -23,8 +26,8 @@ class DuckdbClient:
                 handle s3:// urls.
             use_azure_credential_chain: If true, configures DuckDB to correctly
                 handle azure urls.
-            use_https_credential_chain: If true, configures DuckDB to correctly
-                handle https urls.
+            use_httpfs: If true, configures DuckDB to correctly handle https
+                urls.
             use_hive_partitioning: If true, enables queries on hive partitioned
                 geoparquet files.
             install_extensions: If true, installs extensions before loading them.

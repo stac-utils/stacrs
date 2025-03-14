@@ -45,6 +45,9 @@ ignore_missing_imports = true
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 
+[tool.ruff]
+exclude = ["docs/examples/example_*.py"]
+
 [dependency-groups]
 dev = [
     "geopandas>=1.0.1",
@@ -62,8 +65,9 @@ docs = [
     "humanize>=4.12.1",
     "ipykernel>=6.29.5",
     "jinja2>=3.1.4",
+    "markdown-exec>=1.10.1",
     "mike>=2.1.3",
-    "mkdocs-jupyter>=0.25.1",
+    "mkdocs-gallery>=0.10.4",
     "mkdocs-material[imaging]>=9.5.45",
     "mkdocstrings[python]>=0.27.0",
     "pystac-client>=0.8.5",
